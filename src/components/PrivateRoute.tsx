@@ -1,29 +1,27 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+// PrivateRoute.tsx
+import React from "react";
+import { Navigate } from "react-router-dom";
 
 interface PrivateRouteProps {
-  role: string;
-  redirectTo: string;
-  children: React.ReactNode;
+  role: string; // Expected role (e.g., "ADMIN" or "USER")
+  redirectTo: string; // Path to redirect if conditions are not met
+  children: React.ReactNode; // Protected component
 }
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ role, redirectTo, children }) => {
-  const { user } = useAuth();
+  const token = localStorage.getItem("token");
+  const userRole = localStorage.getItem("role");
 
-  // Check if the user is authenticated and has the correct role
-  if (!user) {
-    // If the user is not authenticated, redirect to login
-    return <Navigate to={redirectTo} />;
+  if (!token) {
+    console.log("No token found, redirecting to login.");
+    return <Navigate to={redirectTo} replace />;
   }
 
-  // Check if the user's role matches the required role
-  if (user.role !== role) {
-    // If the user's role doesn't match, redirect to a default page
-    return <Navigate to={redirectTo} />;
+  if (userRole !== role) {
+    console.log(`Role mismatch: expected ${role}, got ${userRole}`);
+    return <Navigate to={redirectTo} replace />;
   }
 
-  // If authenticated and role matches, render the children (protected route content)
   return <>{children}</>;
 };
 
