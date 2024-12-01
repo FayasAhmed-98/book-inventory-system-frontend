@@ -1,8 +1,9 @@
-import React, { createContext, useState, useEffect, useContext, useCallback, useMemo } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback, useMemo, ReactNode } from 'react';
 import axios from 'axios';
 
 // Interface for a Book object
 export interface Book {
+  image: string;
   id?: number; // Optional ID, required for updates and deletes
   title: string; // Book title
   author: string; // Book author
@@ -35,7 +36,7 @@ export const useBooks = (): BooksContextType => {
 };
 
 // BooksProvider component to wrap the application with context
-export const BooksProvider: React.FC = ({ children }) => {
+export const BooksProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [books, setBooks] = useState<Book[]>([]); // State to store books
   const [error, setError] = useState<string | null>(null); // State to store error messages
 

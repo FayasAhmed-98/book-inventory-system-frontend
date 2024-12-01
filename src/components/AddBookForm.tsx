@@ -26,13 +26,15 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
 
   // State for the book and validation errors
   const [book, setBook] = useState<Book>(
-    initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0 }
+    initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0, image: "" }
   );
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
-    setBook(initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0 });
+    setBook(
+      initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0, image: "" }
+    );
     setErrors({}); // Reset errors when the dialog opens
   }, [initialBook]);
 

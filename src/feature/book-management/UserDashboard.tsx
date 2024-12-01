@@ -35,7 +35,7 @@ const UserDashboard: React.FC = () => {
   );
 
   // Handle page change for pagination
-  const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
