@@ -1,25 +1,34 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Grid, Box, Typography, Container } from '@mui/material'; // Material UI components
+import { Button, TextField, Grid, Typography, Container, Box } from '@mui/material';
+import './SignUp.css'; 
 
+/**
+ * SignUp Component
+ * Handles user registration functionality with form validation.
+ */
 const SignUp: React.FC = () => {
+  // State variables for form inputs, validation errors, and backend errors
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null); // For displaying error message
-  const [formErrors, setFormErrors] = useState<any>({}); // Store validation errors
+  const [error, setError] = useState<string | null>(null);
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
 
-  // Email regex for validation
+  // Regular expressions for validation
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // At least 8 characters, 1 uppercase, 1 number, 1 special char
+  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+  /**
+   * Handles form submission for sign-up.
+   * Validates form inputs and makes a POST request to the sign-up endpoint.
+   * @param {React.FormEvent} e - Form submission event
+   */
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Validate email, username, and password
-    const errors: any = {};
+    const errors: Record<string, string> = {};
 
     // Email validation
     if (!email) {
@@ -43,39 +52,35 @@ const SignUp: React.FC = () => {
         'Password must be at least 8 characters, contain one uppercase letter, one number, and one special character';
     }
 
+    // If validation errors exist, set them and stop submission
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
-      return; // Stop the form submission if there are validation errors
+      return;
     }
 
     try {
-      const response = await axios.post('http://localhost:8080/auth/signup', {
-        email,
-        username,
-        password,
-      });
-
-      // If sign-up is successful, redirect to login page
+      // Make a POST request to the sign-up endpoint
+      const response = await axios.post('http://localhost:8080/auth/signup', { email, username, password });
       alert('User registered successfully!');
-      navigate('/login');
+      navigate('/login'); // Redirect to login page on successful registration
     } catch (error: any) {
-      // Check if the error is from the backend response
-      if (error.response && error.response.data) {
-        const backendMessage = error.response.data.message;
-        const backendDetails = error.response.data.details;
-        setError(`${backendMessage}: ${backendDetails}`);
-      } else {
-        setError('An unexpected error occurred. Please try again later.');
-      }
+      // Set backend error message if provided, otherwise show a generic error
+      setError(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
     }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mt: { xs: 4, sm: 6, md: 8 } }}>
-        <Typography variant="h5" sx={{ mb: 3 }}>Sign Up</Typography>
-        <form onSubmit={handleSignUp} style={{ width: '100%' }}>
-          <Grid container spacing={2}>
+    <Container maxWidth="xs" className="signup-container">
+      <Box className="signup-box">
+        {/* Application Title */}
+        <Typography variant="h4" className="signup-title">
+          Book Inventory Management System
+        </Typography>
+
+        {/* Sign-Up Form */}
+        <form onSubmit={handleSignUp} className="signup-form">
+          <Grid container spacing={3}>
+            {/* Email Input Field */}
             <Grid item xs={12}>
               <TextField
                 label="Email"
@@ -83,11 +88,12 @@ const SignUp: React.FC = () => {
                 fullWidth
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                required
-                error={!!formErrors.email} // Show error if there's an error
-                helperText={formErrors.email} // Display error message
+                error={!!formErrors.email}
+                helperText={formErrors.email}
               />
             </Grid>
+
+            {/* Username Input Field */}
             <Grid item xs={12}>
               <TextField
                 label="Username"
@@ -95,11 +101,12 @@ const SignUp: React.FC = () => {
                 fullWidth
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                required
                 error={!!formErrors.username}
                 helperText={formErrors.username}
               />
             </Grid>
+
+            {/* Password Input Field */}
             <Grid item xs={12}>
               <TextField
                 label="Password"
@@ -108,25 +115,38 @@ const SignUp: React.FC = () => {
                 fullWidth
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 error={!!formErrors.password}
                 helperText={formErrors.password}
               />
             </Grid>
+
+            {/* Display error message if registration fails */}
             {error && (
               <Grid item xs={12}>
-                <Typography color="error" variant="body2" align="center">
-                  {error} {/* Display the error message */}
+                <Typography color="error" variant="body2" className="signup-error">
+                  {error}
                 </Typography>
               </Grid>
             )}
+
+            {/* Sign-Up Button */}
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth type="submit">
+              <Button variant="contained" color="primary" fullWidth type="submit" className="signup-button">
                 Sign Up
               </Button>
             </Grid>
           </Grid>
         </form>
+
+        {/* Redirect to Login */}
+        <Grid item xs={12} className="login-redirect">
+          <Typography variant="body2" align="center">
+            Already have an account?{' '}
+            <Button color="secondary" onClick={() => navigate('/login')}>
+              Login
+            </Button>
+          </Typography>
+        </Grid>
       </Box>
     </Container>
   );
