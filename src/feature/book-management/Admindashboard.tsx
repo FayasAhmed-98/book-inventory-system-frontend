@@ -39,7 +39,9 @@ const AdminDashboard: React.FC = () => {
   };
 
   // Handles rows per page change
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRowsPerPageChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -99,7 +101,9 @@ const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      <Box
+        sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
+      >
         <TextField
           label="Search Books"
           fullWidth
@@ -108,8 +112,8 @@ const AdminDashboard: React.FC = () => {
           sx={{
             maxWidth: 600,
             borderRadius: "20px",
-            '& .MuiOutlinedInput-root': { borderRadius: "20px" },
-            '& .MuiInputLabel-root': { fontWeight: "bold" },
+            "& .MuiOutlinedInput-root": { borderRadius: "20px" },
+            "& .MuiInputLabel-root": { fontWeight: "bold" },
           }}
           InputProps={{
             endAdornment: <SearchIcon sx={{ color: "#1976d2" }} />,
@@ -148,10 +152,7 @@ const AdminDashboard: React.FC = () => {
                 <td>{book.stock}</td>
                 <td>
                   <div className="action-buttons">
-                    <button
-                      className="update"
-                      onClick={() => handleEdit(book)}
-                    >
+                    <button className="update" onClick={() => handleEdit(book)}>
                       Update
                     </button>
                     <button

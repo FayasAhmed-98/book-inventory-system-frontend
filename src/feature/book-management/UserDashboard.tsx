@@ -35,18 +35,26 @@ const UserDashboard: React.FC = () => {
   );
 
   // Handle page change for pagination
-  const handleChangePage = (_: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+  const handleChangePage = (
+    _: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
   // Handle rows per page change and reset to the first page
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0); // Reset to the first page
   };
 
   // Calculate the books to display based on pagination
-  const paginatedBooks = filteredBooks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
+  const paginatedBooks = filteredBooks.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
 
   // Handle logout and navigate back to the login page
   const handleLogout = () => {
@@ -101,7 +109,9 @@ const UserDashboard: React.FC = () => {
                 <TableCell>{book.author}</TableCell>
                 <TableCell>{book.genre}</TableCell>
                 <TableCell>{book.description}</TableCell>
-                <TableCell className="price">${book.price.toFixed(2)}</TableCell>
+                <TableCell className="price">
+                  ${book.price.toFixed(2)}
+                </TableCell>
                 <TableCell className="stock">{book.stock}</TableCell>
               </TableRow>
             ))}

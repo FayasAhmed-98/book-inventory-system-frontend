@@ -26,14 +26,30 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
 
   // State for the book and validation errors
   const [book, setBook] = useState<Book>(
-    initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0, image: "" }
+    initialBook || {
+      title: "",
+      author: "",
+      genre: "",
+      description: "",
+      price: 0,
+      stock: 0,
+      image: "",
+    }
   );
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     setBook(
-      initialBook || { title: "", author: "", genre: "", description: "", price: 0, stock: 0, image: "" }
+      initialBook || {
+        title: "",
+        author: "",
+        genre: "",
+        description: "",
+        price: 0,
+        stock: 0,
+        image: "",
+      }
     );
     setErrors({}); // Reset errors when the dialog opens
   }, [initialBook]);
@@ -44,7 +60,8 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
     if (!book.title.trim()) newErrors.title = "Title is required.";
     if (!book.author.trim()) newErrors.author = "Author is required.";
     if (!book.genre.trim()) newErrors.genre = "Genre is required.";
-    if (!book.description.trim()) newErrors.description = "Description is required.";
+    if (!book.description.trim())
+      newErrors.description = "Description is required.";
     if (book.price <= 0) newErrors.price = "Price must be greater than 0.";
     if (book.stock < 0) newErrors.stock = "Stock cannot be negative.";
     setErrors(newErrors);
@@ -110,7 +127,9 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
           label="Price"
           fullWidth
           value={book.price}
-          onChange={(e) => setBook({ ...book, price: parseFloat(e.target.value) })}
+          onChange={(e) =>
+            setBook({ ...book, price: parseFloat(e.target.value) })
+          }
           type="number"
           error={!!errors.price}
           helperText={errors.price}
@@ -120,7 +139,9 @@ const AddBookForm: React.FC<AddBookFormProps> = ({
           label="Stock"
           fullWidth
           value={book.stock}
-          onChange={(e) => setBook({ ...book, stock: parseInt(e.target.value) })}
+          onChange={(e) =>
+            setBook({ ...book, stock: parseInt(e.target.value) })
+          }
           type="number"
           error={!!errors.stock}
           helperText={errors.stock}

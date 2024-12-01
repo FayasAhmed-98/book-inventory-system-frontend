@@ -1,44 +1,44 @@
 /* Container styling */
 .signup-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background-color: #f9f9f9;
-  }
-  
-  /* Box for sign-up form */
-  .signup-box {
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
-  }
-  
-  /* Title styling */
-  .signup-title {
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-    color: #333;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  
-  /* Error message */
-  .signup-error {
-    margin-bottom: 1rem;
-  }
-  
-  /* Button styling */
-  .signup-button {
-    padding: 0.75rem;
-    font-size: 1rem;
-    font-weight: bold;
-  }
-  
-  .login-redirect {
-    margin-top: 1rem;
-  }  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+/* Box for sign-up form */
+.signup-box {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+}
+
+/* Title styling */
+.signup-title {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #333;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+/* Error message */
+.signup-error {
+  margin-bottom: 1rem;
+}
+
+/* Button styling */
+.signup-button {
+  padding: 0.75rem;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.login-redirect {
+  margin-top: 1rem;
+}
