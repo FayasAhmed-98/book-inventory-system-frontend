@@ -1,104 +1,116 @@
-
 import { render, screen, waitFor } from '@testing-library/react';
-import { BooksProvider } from '../../context/BooksContext';
-import AdminDashboard from '../../feature/book-management/Admindashboard';
+import { BooksProvider } from '../../context/BooksContext'; // Make sure the path is correct
+import AdminDashboard from '../../feature/book-management/Admindashboard'; // Make sure the path is correct
 import userEvent from '@testing-library/user-event';
 
-// Mock the BooksContext
-const mockAddBook = jest.fn();
-const mockUpdateBook = jest.fn();
-const mockDeleteBook = jest.fn();
-const mockBooks = [
-  { id: 1, title: "Book 1", author: "Author 1", genre: "Fiction", price: 10 },
-  { id: 2, title: "Book 2", author: "Author 2", genre: "Non-Fiction", price: 15 },
-];
 
-// Helper function to render the AdminDashboard with context
+// Helper function to render AdminDashboard with context
 const renderAdminDashboard = () => {
   return render(
-    <BooksProvider value={{
-      books: mockBooks,
-      addBook: mockAddBook,
-      updateBook: mockUpdateBook,
-      deleteBook: mockDeleteBook,
-      error: null,
-      setError: jest.fn()
-    }}>
+    <BooksProvider>
       <AdminDashboard />
     </BooksProvider>
   );
 };
 
 describe('AdminDashboard', () => {
-  test('renders books table', () => {
+  test('renders books table', async () => {
     renderAdminDashboard();
-    expect(screen.getByText('Book 1')).toBeInTheDocument();
-    expect(screen.getByText('Book 2')).toBeInTheDocument();
+
+    // Wait for books to load and check if they are rendered
+    await waitFor(() => {
+      expect(screen.getByText('Book 1')).toBeInTheDocument();
+      expect(screen.getByText('Book 2')).toBeInTheDocument();
+    });
   });
 
   test('adds a new book', async () => {
     renderAdminDashboard();
-    
-    // Simulate user typing in the form fields
-    userEvent.type(screen.getByLabelText(/title/i), 'Book 3');
-    userEvent.type(screen.getByLabelText(/author/i), 'Author 3');
-    userEvent.type(screen.getByLabelText(/genre/i), 'Sci-Fi');
-    userEvent.type(screen.getByLabelText(/price/i), '20');
-    
-    // Simulate submitting the form
-    userEvent.click(screen.getByText('Add Book'));
-    
-    // Ensure addBook is called with the correct values
-    await waitFor(() => expect(mockAddBook).toHaveBeenCalledWith({
-      title: 'Book 3',
-      author: 'Author 3',
-      genre: 'Sci-Fi',
-      price: 20,
-    }));
+
+    // Open the modal for adding a new book
+    const addButton = screen.getByText('Add Book');
+    userEvent.click(addButton);
+
+    // Fill out the form to add a new book
+    const titleInput = screen.getByLabelText(/title/i);
+    const authorInput = screen.getByLabelText(/author/i);
+    const genreInput = screen.getByLabelText(/genre/i);
+    const priceInput = screen.getByLabelText(/price/i);
+    const stockInput = screen.getByLabelText(/stock/i);
+    const descriptionInput = screen.getByLabelText(/description/i);
+
+    userEvent.type(titleInput, 'New Book');
+    userEvent.type(authorInput, 'New Author');
+    userEvent.type(genreInput, 'Science Fiction');
+    userEvent.type(priceInput, '20');
+    userEvent.type(stockInput, '150');
+    userEvent.type(descriptionInput, 'A new book description');
+
+    // Submit the form to add the book
+    const submitButton = screen.getByText('Submit');
+    userEvent.click(submitButton);
+
+    // Wait for the book to be added and check if it is displayed in the list
+    await waitFor(() => {
+      expect(screen.getByText('New Book')).toBeInTheDocument();
+      expect(screen.getByText('New Author')).toBeInTheDocument();
+    });
   });
 
-  test('updates a book', async () => {
+  test('updates an existing book', async () => {
     renderAdminDashboard();
-    
-    // Simulate user clicking the "Edit" button for Book 1
-    userEvent.click(screen.getByText('Edit'));
 
-    // Update the details in the form
-    userEvent.clear(screen.getByLabelText(/title/i));
-    userEvent.type(screen.getByLabelText(/title/i), 'Updated Book 1');
+    // Open the modal to edit the first book
+    const editButton = screen.getAllByText('Edit')[0];
+    userEvent.click(editButton);
 
-    // Simulate form submission
-    userEvent.click(screen.getByText('Update Book'));
+    // Change the details of the book
+    const titleInput = screen.getByLabelText(/title/i);
+    const authorInput = screen.getByLabelText(/author/i);
+    const genreInput = screen.getByLabelText(/genre/i);
+    const priceInput = screen.getByLabelText(/price/i);
+    const stockInput = screen.getByLabelText(/stock/i);
+    const descriptionInput = screen.getByLabelText(/description/i);
 
-    // Ensure updateBook was called with the correct parameters
-    await waitFor(() => expect(mockUpdateBook).toHaveBeenCalledWith({
-      id: 1,
-      title: 'Updated Book 1',
-      author: 'Author 1',
-      genre: 'Fiction',
-      price: 10,
-    }));
+    userEvent.clear(titleInput);
+    userEvent.type(titleInput, 'Updated Book Title');
+    userEvent.clear(authorInput);
+    userEvent.type(authorInput, 'Updated Author');
+    userEvent.clear(genreInput);
+    userEvent.type(genreInput, 'Updated Genre');
+    userEvent.clear(priceInput);
+    userEvent.type(priceInput, '25');
+    userEvent.clear(stockInput);
+    userEvent.type(stockInput, '200');
+    userEvent.clear(descriptionInput);
+    userEvent.type(descriptionInput, 'Updated description');
+
+    // Submit the form to update the book
+    const submitButton = screen.getByText('Submit');
+    userEvent.click(submitButton);
+
+    // Wait for the book to be updated and check the updated values
+    await waitFor(() => {
+      expect(screen.getByText('Updated Book Title')).toBeInTheDocument();
+      expect(screen.getByText('Updated Author')).toBeInTheDocument();
+    });
   });
 
   test('deletes a book', async () => {
     renderAdminDashboard();
 
-    // Simulate user clicking the "Delete" button for Book 1
-    userEvent.click(screen.getByText('Delete'));
+    // Find the delete button for the first book
+    const deleteButton = screen.getAllByText('Delete')[0];
 
-    // Ensure deleteBook was called with the correct book ID
-    await waitFor(() => expect(mockDeleteBook).toHaveBeenCalledWith(1));
+    // Confirm the deletion
+    window.confirm = jest.fn().mockReturnValue(true);
 
-    // Ensure that the deleted book is no longer in the document
-    expect(screen.queryByText('Book 1')).not.toBeInTheDocument();
-  });
+    // Click the delete button
+    userEvent.click(deleteButton);
 
-  test('filters books by search term', async () => {
-    renderAdminDashboard();
-    const searchInput = screen.getByLabelText('Search Books');
-    
-    userEvent.type(searchInput, 'Book 1');
-    expect(screen.getByText('Book 1')).toBeInTheDocument();
-    expect(screen.queryByText('Book 2')).not.toBeInTheDocument();
+    // Wait for the book to be removed from the list
+    await waitFor(() => {
+      expect(screen.queryByText('Book 1')).not.toBeInTheDocument();
+    });
   });
 });

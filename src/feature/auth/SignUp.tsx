@@ -61,6 +61,7 @@ const SignUp: React.FC = () => {
     try {
       // Make a POST request to the sign-up endpoint
       const response = await axios.post('http://localhost:8080/auth/signup', { email, username, password });
+      console.log(response.data);
       alert('User registered successfully!');
       navigate('/login'); // Redirect to login page on successful registration
     } catch (error: any) {
