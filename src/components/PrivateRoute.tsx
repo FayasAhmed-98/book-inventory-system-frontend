@@ -8,7 +8,11 @@ interface PrivateRouteProps {
   children: React.ReactNode; // Protected component
 }
 
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ role, redirectTo, children }) => {
+const PrivateRoute: React.FC<PrivateRouteProps> = ({
+  role,
+  redirectTo,
+  children,
+}) => {
   const token = localStorage.getItem("token");
   const userRole = localStorage.getItem("role");
 

@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Grid, Typography, Container, Box } from '@mui/material';
-import './Login.css'; 
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  TextField,
+  Grid,
+  Typography,
+  Container,
+  Box,
+} from "@mui/material";
+import "./Login.css";
 
 /**
  * Login Component
@@ -10,15 +17,16 @@ import './Login.css';
  */
 const Login: React.FC = () => {
   // State variables for form inputs, validation errors, and backend errors
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
 
-  // Regex for password validation: 
+  // Regex for password validation:
   // At least 8 characters, one uppercase, one number, and one special character
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   /**
    * Handles form submission for login.
@@ -30,12 +38,12 @@ const Login: React.FC = () => {
     const errors: Record<string, string> = {};
 
     // Input validation
-    if (!username) errors.username = 'Username is required';
+    if (!username) errors.username = "Username is required";
     if (!password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     } else if (!passwordRegex.test(password)) {
       errors.password =
-        'Password must be at least 8 characters, contain one uppercase letter, one number, and one special character';
+        "Password must be at least 8 characters, contain one uppercase letter, one number, and one special character";
     }
 
     // If validation errors exist, set them and stop submission
@@ -46,25 +54,31 @@ const Login: React.FC = () => {
 
     try {
       // Make a POST request to the login endpoint
-      const response = await axios.post('http://localhost:8080/auth/login', { username, password });
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        username,
+        password,
+      });
       const { token, role } = response.data;
 
       // Store token and role in localStorage
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
+      localStorage.setItem("token", token);
+      localStorage.setItem("role", role);
 
       // Navigate to the appropriate dashboard based on role
-      navigate(role === 'ADMIN' ? '/admin/dashboard' : '/user/dashboard');
+      navigate(role === "ADMIN" ? "/admin/dashboard" : "/user/dashboard");
     } catch (error: any) {
       // Set backend error message if provided, otherwise show a generic error
-      setError(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+      setError(
+        error.response?.data?.message ||
+          "An unexpected error occurred. Please try again."
+      );
     }
   };
 
   /**
    * Redirects user to the sign-up page.
    */
-  const handleSignUpRedirect = () => navigate('/signup');
+  const handleSignUpRedirect = () => navigate("/signup");
 
   return (
     <Container maxWidth="xs" className="login-container">
@@ -107,7 +121,11 @@ const Login: React.FC = () => {
             {/* Display error message if login fails */}
             {error && (
               <Grid item xs={12}>
-                <Typography color="error" variant="body2" className="login-error">
+                <Typography
+                  color="error"
+                  variant="body2"
+                  className="login-error"
+                >
                   {error}
                 </Typography>
               </Grid>
@@ -115,7 +133,13 @@ const Login: React.FC = () => {
 
             {/* Login Button */}
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth type="submit" className="login-button">
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+                className="login-button"
+              >
                 Login
               </Button>
             </Grid>

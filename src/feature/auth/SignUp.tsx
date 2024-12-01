@@ -1,8 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Button, TextField, Grid, Typography, Container, Box } from '@mui/material';
-import './SignUp.css'; 
+import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import {
+  Button,
+  TextField,
+  Grid,
+  Typography,
+  Container,
+  Box,
+} from "@mui/material";
+import "./SignUp.css";
 
 /**
  * SignUp Component
@@ -10,16 +17,17 @@ import './SignUp.css';
  */
 const SignUp: React.FC = () => {
   // State variables for form inputs, validation errors, and backend errors
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const navigate = useNavigate();
 
   // Regular expressions for validation
   const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
-  const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const passwordRegex =
+    /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
   /**
    * Handles form submission for sign-up.
@@ -32,24 +40,24 @@ const SignUp: React.FC = () => {
 
     // Email validation
     if (!email) {
-      errors.email = 'Email is required';
+      errors.email = "Email is required";
     } else if (!emailRegex.test(email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
 
     // Username validation
     if (!username) {
-      errors.username = 'Username is required';
+      errors.username = "Username is required";
     } else if (username.length < 3 || username.length > 20) {
-      errors.username = 'Username should be between 3 to 20 characters';
+      errors.username = "Username should be between 3 to 20 characters";
     }
 
     // Password validation
     if (!password) {
-      errors.password = 'Password is required';
+      errors.password = "Password is required";
     } else if (!passwordRegex.test(password)) {
       errors.password =
-        'Password must be at least 8 characters, contain one uppercase letter, one number, and one special character';
+        "Password must be at least 8 characters, contain one uppercase letter, one number, and one special character";
     }
 
     // If validation errors exist, set them and stop submission
@@ -60,13 +68,20 @@ const SignUp: React.FC = () => {
 
     try {
       // Make a POST request to the sign-up endpoint
-      const response = await axios.post('http://localhost:8080/auth/signup', { email, username, password });
+      const response = await axios.post("http://localhost:8080/auth/signup", {
+        email,
+        username,
+        password,
+      });
       console.log(response.data);
-      alert('User registered successfully!');
-      navigate('/login'); // Redirect to login page on successful registration
+      alert("User registered successfully!");
+      navigate("/login"); // Redirect to login page on successful registration
     } catch (error: any) {
       // Set backend error message if provided, otherwise show a generic error
-      setError(error.response?.data?.message || 'An unexpected error occurred. Please try again.');
+      setError(
+        error.response?.data?.message ||
+          "An unexpected error occurred. Please try again."
+      );
     }
   };
 
@@ -124,7 +139,11 @@ const SignUp: React.FC = () => {
             {/* Display error message if registration fails */}
             {error && (
               <Grid item xs={12}>
-                <Typography color="error" variant="body2" className="signup-error">
+                <Typography
+                  color="error"
+                  variant="body2"
+                  className="signup-error"
+                >
                   {error}
                 </Typography>
               </Grid>
@@ -132,7 +151,13 @@ const SignUp: React.FC = () => {
 
             {/* Sign-Up Button */}
             <Grid item xs={12}>
-              <Button variant="contained" color="primary" fullWidth type="submit" className="signup-button">
+              <Button
+                variant="contained"
+                color="primary"
+                fullWidth
+                type="submit"
+                className="signup-button"
+              >
                 Sign Up
               </Button>
             </Grid>
@@ -142,8 +167,8 @@ const SignUp: React.FC = () => {
         {/* Redirect to Login */}
         <Grid item xs={12} className="login-redirect">
           <Typography variant="body2" align="center">
-            Already have an account?{' '}
-            <Button color="secondary" onClick={() => navigate('/login')}>
+            Already have an account?{" "}
+            <Button color="secondary" onClick={() => navigate("/login")}>
               Login
             </Button>
           </Typography>
