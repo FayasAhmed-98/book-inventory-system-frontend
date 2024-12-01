@@ -21,7 +21,6 @@ body {
   .app-bar .title {
     font-weight: bold;
     flex-grow: 1;
-    text-align: center;
     font-size: 1.5rem;
   }
   
@@ -43,19 +42,14 @@ body {
   }
   
   .search-bar input {
-    max-width: 600px;
     width: 100%;
     border-radius: 20px;
     padding: 10px 15px;
-    border: 1px solid #ccc;
-    outline: none;
     font-size: 1rem;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
   
   .search-bar input:focus {
     border-color: #1976d2;
-    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
   }
   
   /* Books Table */

@@ -20,13 +20,13 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import "./UserDashboard.css";
 
 const UserDashboard: React.FC = () => {
-  const { books } = useBooks();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [page, setPage] = useState(0); // Current page
-  const [rowsPerPage, setRowsPerPage] = useState(5); // Rows per page
-  const navigate = useNavigate();
+  const { books } = useBooks(); // Access books data from the context
+  const [searchTerm, setSearchTerm] = useState(""); // State for the search input
+  const [page, setPage] = useState(0); // State for the current page in pagination
+  const [rowsPerPage, setRowsPerPage] = useState(5); // State for the number of rows per page
+  const navigate = useNavigate(); // Hook to navigate to different routes
 
-  // Filter books based on search term
+  // Filter books based on the search term entered by the user
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -34,108 +34,91 @@ const UserDashboard: React.FC = () => {
       book.genre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Handle page change
+  // Handle page change for pagination
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
   };
 
-  // Handle rows per page change
+  // Handle rows per page change and reset to the first page
   const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0); // Reset page to the first page when rows per page changes
+    setPage(0); // Reset to the first page
   };
 
-  // Calculate the books to display for the current page
+  // Calculate the books to display based on pagination
   const paginatedBooks = filteredBooks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
-  // Logout handler
+  // Handle logout and navigate back to the login page
   const handleLogout = () => {
-    navigate("/login"); // Navigate to the login page
+    navigate("/login");
   };
 
   return (
     <Container>
-      {/* AppBar with Logout button */}
-      <AppBar position="static" sx={{ backgroundColor: "#1976d2" }}>
-        <Toolbar>
-          <Typography variant="h6" style={{ flexGrow: 1, fontWeight: "bold" }}>
+      {/* AppBar with title and logout button */}
+      <AppBar position="static" className="app-bar">
+        <Toolbar className="toolbar">
+          <Typography variant="h6" className="title">
             User Dashboard
           </Typography>
-          <Button
-            color="inherit"
-            onClick={handleLogout}
-            sx={{
-              backgroundColor: "#e53935",
-              '&:hover': { backgroundColor: "#c62828" },
-              fontSize: "1rem",
-            }}
-          >
+          <Button className="logout-button" onClick={handleLogout}>
             Logout
           </Button>
         </Toolbar>
       </AppBar>
 
-      {/* Search Bar */}
-      <Box sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+      {/* Search bar for filtering books */}
+      <Box className="search-bar">
         <TextField
           label="Search Books"
           fullWidth
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          sx={{
-            maxWidth: 600,
-            borderRadius: "20px",
-            '& .MuiOutlinedInput-root': { borderRadius: "20px" },
-            '& .MuiInputLabel-root': { fontWeight: "bold" },
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)} // Update the search term as user types
           InputProps={{
-            endAdornment: <SearchIcon sx={{ color: "#1976d2" }} />,
+            endAdornment: <SearchIcon />, // Add a search icon to the input field
           }}
         />
       </Box>
 
-      {/* Books Table */}
+      {/* Table to display books */}
       <div className="table-container">
-        <Table sx={{ marginTop: "20px", borderCollapse: "collapse", width: "100%" }}>
+        <Table>
           <TableHead>
-            <TableRow sx={{ backgroundColor: "#1976d2", color: "white" }}>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Title</TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Author</TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Genre</TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Description</TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Price</TableCell>
-              <TableCell sx={{ fontWeight: "bold", color: "white" }}>Stock</TableCell>
+            <TableRow>
+              <TableCell>Title</TableCell>
+              <TableCell>Author</TableCell>
+              <TableCell>Genre</TableCell>
+              <TableCell>Description</TableCell>
+              <TableCell>Price</TableCell>
+              <TableCell>Stock</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
+            {/* Map through the books and display each one in a table row */}
             {paginatedBooks.map((book) => (
               <TableRow key={book.id}>
-                <TableCell sx={{ fontWeight: "bold", color: "#1976d2" }}>{book.title}</TableCell>
+                <TableCell className="title">{book.title}</TableCell>
                 <TableCell>{book.author}</TableCell>
                 <TableCell>{book.genre}</TableCell>
                 <TableCell>{book.description}</TableCell>
-                <TableCell sx={{ color: "#388e3c" }}>${book.price.toFixed(2)}</TableCell>
-                <TableCell sx={{ color: "#ff5722" }}>{book.stock}</TableCell>
+                <TableCell className="price">${book.price.toFixed(2)}</TableCell>
+                <TableCell className="stock">{book.stock}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </div>
 
-      {/* Pagination Controls */}
+      {/* Pagination controls for navigating through pages */}
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={filteredBooks.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-        sx={{
-          backgroundColor: "#f5f5f5",
-          borderTop: "1px solid #e0e0e0",
-          padding: "10px",
-        }}
+        rowsPerPageOptions={[5, 10, 25]} // Options for rows per page
+        component="div" // Indicate this controls a table
+        count={filteredBooks.length} // Total number of filtered books
+        rowsPerPage={rowsPerPage} // Current rows per page
+        page={page} // Current page number
+        onPageChange={handleChangePage} // Handler for page changes
+        onRowsPerPageChange={handleChangeRowsPerPage} // Handler for rows per page changes
+        className="pagination"
       />
     </Container>
   );

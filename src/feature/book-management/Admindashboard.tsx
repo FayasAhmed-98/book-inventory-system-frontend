@@ -14,25 +14,32 @@ import { Search as SearchIcon } from "@mui/icons-material";
 import "./AdminDashboard.css";
 
 const AdminDashboard: React.FC = () => {
+  // Access books and deleteBook function from BooksContext
   const { books, deleteBook } = useBooks();
-  const [openAddBookDialog, setOpenAddBookDialog] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedBook, setSelectedBook] = useState<any>(null);
-  const [notification, setNotification] = useState({ message: "", type: "success" });
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  // State variables
+  const [openAddBookDialog, setOpenAddBookDialog] = useState(false); // Controls the Add Book dialog visibility
+  const [searchTerm, setSearchTerm] = useState(""); // Tracks the search input
+  const [selectedBook, setSelectedBook] = useState<any>(null); // Tracks the book selected for editing
+  const [notification, setNotification] = useState({ message: "", type: "success" }); // Manages notification messages
+  const [openSnackbar, setOpenSnackbar] = useState(false); // Controls the visibility of the notification snackbar
+  const [page, setPage] = useState(0); // Tracks the current page in pagination
+  const [rowsPerPage, setRowsPerPage] = useState(5); // Tracks the number of rows per page for pagination
+
   const navigate = useNavigate();
 
+  // Handles pagination page changes
   const handlePageChange = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
+  // Handles rows per page changes
   const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    setPage(0); // Reset to the first page after changing rows per page
   };
 
+  // Filters books based on the search term
   const filteredBooks = books.filter(
     (book) =>
       book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -40,26 +47,31 @@ const AdminDashboard: React.FC = () => {
       book.genre.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Applies pagination to the filtered books
   const paginatedBooks = filteredBooks.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
 
+  // Handles the logout functionality
   const handleLogout = () => {
     navigate("/login");
   };
 
+  // Deletes a book and shows a notification
   const handleDelete = async (id: number) => {
     await deleteBook(id);
     setNotification({ message: "Book deleted successfully!", type: "info" });
     setOpenSnackbar(true);
   };
 
+  // Opens the Add Book dialog for editing a book
   const handleEdit = (book: any) => {
     setSelectedBook(book);
     setOpenAddBookDialog(true);
   };
 
+  // Displays a success message after a successful action (add/update)
   const handleAction = (message: string) => {
     setNotification({ message, type: "success" });
     setOpenSnackbar(true);
@@ -106,7 +118,7 @@ const AdminDashboard: React.FC = () => {
         />
       </Box>
 
-      {/* Table */}
+      {/* Books Table */}
       <div className="table-container">
         <table>
           <thead>
@@ -158,7 +170,7 @@ const AdminDashboard: React.FC = () => {
         </table>
       </div>
 
-      {/* Pagination */}
+      {/* Pagination Controls */}
       <TablePagination
         component="div"
         count={filteredBooks.length}
@@ -181,7 +193,7 @@ const AdminDashboard: React.FC = () => {
         onAction={handleAction}
       />
 
-      {/* Snackbar */}
+      {/* Snackbar for Notifications */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}
