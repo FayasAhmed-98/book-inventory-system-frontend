@@ -1,0 +1,199 @@
+/* General Styles */
+body {
+    font-family: "Roboto", sans-serif;
+    margin: 0;
+    background-color: #f9f9f9;
+    color: #333;
+  }
+  
+  /* AppBar Styles */
+  .app-bar {
+    background-color: #1976d2 !important;
+  }
+  
+  .app-bar .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  
+  .app-bar .title {
+    font-weight: bold;
+    flex-grow: 1;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .app-bar .logout-button {
+    background-color: #e53935;
+    color: white;
+    font-size: 1rem;
+  }
+  
+  .app-bar .logout-button:hover {
+    background-color: #c62828;
+  }
+  
+  /* Search Bar */
+  .search-bar {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .search-bar input {
+    max-width: 600px;
+    width: 100%;
+    border-radius: 20px;
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .search-bar input:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 5px rgba(25, 118, 210, 0.5);
+  }
+  
+  /* Books Table */
+  .table-container {
+    margin: 20px auto;
+    overflow-x: auto;
+    max-width: 90%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    text-align: left;
+    padding: 12px;
+  }
+  
+  table th {
+    background-color: #1976d2;
+    color: white;
+    font-weight: bold;
+  }
+  
+  table tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  table tr:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s;
+  }
+  
+  table td {
+    color: #333;
+  }
+  
+  table td.title {
+    font-weight: bold;
+    color: #1976d2;
+  }
+  
+  table td.price {
+    color: #388e3c;
+  }
+  
+  table td.stock {
+    color: #ff5722;
+  }
+  
+  /* Pagination */
+  .pagination {
+    background-color: white;
+    border-top: 1px solid #e0e0e0;
+    padding: 10px;
+  }
+  
+  .pagination select,
+  .pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+  }
+  
+  /* Mobile-Responsive Styles */
+  @media (max-width: 768px) {
+    /* AppBar */
+    .app-bar .title {
+      font-size: 1.2rem; /* Adjust title size for smaller screens */
+      text-align: left; /* Align title left for mobile */
+    }
+  
+    .app-bar .logout-button {
+      font-size: 0.9rem;
+      padding: 8px;
+    }
+  
+    /* Search Bar */
+    .search-bar input {
+      padding: 8px;
+      font-size: 1rem;
+    }
+  
+    /* Books Table */
+    table th,
+    table td {
+      padding: 8px;
+      font-size: 0.9rem;
+    }
+  
+    /* Pagination */
+    .pagination select,
+    .pagination button {
+      font-size: 0.8rem;
+      padding: 5px 8px;
+    }
+  
+    /* Table responsive */
+    .table-container {
+      margin: 0 auto;
+      max-width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    /* AppBar */
+    .app-bar .title {
+      font-size: 1rem; /* Smaller font size on small screens */
+      text-align: center;
+    }
+  
+    /* Search Bar */
+    .search-bar input {
+      padding: 10px;
+      font-size: 0.9rem;
+    }
+  
+    /* Books Table */
+    table th,
+    table td {
+      padding: 6px;
+      font-size: 0.8rem;
+    }
+  
+    table {
+      font-size: 0.9rem; /* Reduce table font size */
+    }
+  
+    .pagination select,
+    .pagination button {
+      padding: 4px 8px;
+      font-size: 0.7rem;
+    }
+  }
+  
